@@ -8,7 +8,10 @@ import {
   weatherCondation,
   temp,
   icon,
-  unitSelect
+  realFeel,
+  humidity,
+  windSpeed,
+  visibility,
 } from "./varaibles.js";
 
 function displayError(message) {
@@ -17,7 +20,7 @@ function displayError(message) {
 
 async function FetchData(location, unit) {
   try {
-    const apiUnit = unit === 'imperial' ? 'imperial' : 'metric';
+    const apiUnit = unit === "imperial" ? "imperial" : "metric";
     const rescurrent = await fetch(
       `${BASE_URL + location}&appid=${API_KEY}&units=${apiUnit}`
     );
@@ -27,11 +30,15 @@ async function FetchData(location, unit) {
     }
 
     const currentData = await rescurrent.json();
+    console.log(currentData, "currentdata");
     currentForcastContainer.innerHTML = "";
 
     cityName.textContent = currentData.city.name;
     weatherCondation.textContent = currentData.list[0].weather[0].description;
-    temp.innerHTML = currentData.list[0].main.temp.toFixed(0) + "&deg;" + (unit === 'imperial' ? 'F' : 'C');
+    temp.innerHTML =
+      currentData.list[0].main.temp.toFixed(0) +
+      "&deg;" +
+      (unit === "imperial" ? "F" : "C");
     const iconCode = currentData.list[0].weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
@@ -41,14 +48,29 @@ async function FetchData(location, unit) {
     const hourlyForecast = currentData.list.map((hourlyData) => ({
       hour: new Date(hourlyData.dt * 1000).getHours(),
       date: new Date(hourlyData.dt * 1000).toLocaleDateString(),
-      temperature: hourlyData.main.temp.toFixed(0)+ "&deg;" + (unit === 'imperial' ? 'F' : 'C'), // Display units,
+      temperature:
+        hourlyData.main.temp.toFixed(0) +
+        "&deg;" +
+        (unit === "imperial" ? "F" : "C"), // Display units,
       iconUrl: `https://openweathermap.org/img/wn/${hourlyData.weather[0].icon}@2x.png`,
     }));
 
     // eslint-disable-next-line
-    const swiper = new Swiper(".swiper-container", {
-      slidesPerView: "5",
+    const swiper = new Swiper('.swiper-container', {
+      slidesPerView: '3',
       spaceBetween: 0,
+      breakpoints: {
+        // Customize when Swiper should change number of slides
+        768: {
+          slidesPerView: 4, // For screens with width >= 768px, show 3 slides
+        },
+        992: {
+          slidesPerView: 5, // For screens with width >= 992px, show 4 slides
+        },
+        1200: {
+          slidesPerView: 6, // For screens with width >= 1200px, show 5 slides
+        },
+      },
     });
 
     // Populate the slider with hourly weather data
@@ -61,12 +83,23 @@ async function FetchData(location, unit) {
             <div class="hourly-data">
               <p class="color-secondary">${hourlyData.hour}:00</p>
               <img src="${hourlyData.iconUrl}" alt="Weather Icon">
-              <p class="font-size">${hourlyData.temperature}°C</p>
+              <p class="font-size">${hourlyData.temperature}</p>
             </div>
           `;
       hourlySlide.innerHTML = htmlContent;
       currentForcastContainer.appendChild(hourlySlide);
     });
+
+    realFeel.innerHTML =
+      currentData.list[0].main.feels_like.toFixed(0) + `&deg;`;
+    humidity.textContent = currentData.list[0].main.humidity.toFixed(0) + `%`;
+    const windSpeedMetersPerSecond = currentData.list[0].wind.speed;
+    console.log(windSpeedMetersPerSecond)
+    const windSpeedKmPerHour = windSpeedMetersPerSecond * 3.6;
+    windSpeed.innerHTML = `${windSpeedKmPerHour.toFixed(0)}km/h`;
+    const visibilitycurent = currentData.list[0].visibility;
+    const visibilityKm = visibilitycurent / 1000;
+    visibility.innerHTML = `${visibilityKm.toFixed(0)}Km/h`;
 
     const resdaily = await fetch(
       `${DAILY_BASE_URL + location}&key=${DAILY_API_KEY}&units=${unit}`
@@ -81,7 +114,6 @@ async function FetchData(location, unit) {
     dailyForcostContainer.innerHTML = "";
 
     const dailyForecastData = dailyData.data;
-    console.log(dailyForecastData);
 
     dailyForecastData.forEach((dailyData) => {
       const dailyContainer = document.createElement("div");

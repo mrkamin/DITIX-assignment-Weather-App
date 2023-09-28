@@ -29,7 +29,7 @@
   <body>
     <div class="container mt-3 d-flex flex-column align-items-center">
       <h2>My Weather Application</h2>
-      <div id="errorContainer"></div>
+      <p id="errorContainer" class="errorContainer"></p>
       <section class="container grid mt-2">
         <header
           class="header-container d-flex flex-column align-items-center gap-5"
@@ -60,7 +60,7 @@
               class="container p-2 search-input"
               type="text"
               id="locationInput"
-              placeholder="Enter location (e.g., city or ZIP code)"
+              placeholder="Enter location (e.g., city name)"
             />
           </div>
           <div class="container hero align-items-center">
@@ -94,7 +94,9 @@
           <div class="air-condition-container container">
             <div class="air-condition-container-item-one">
               <h6 class="color-third">AIR CONDITIONS</h6>
-              <button class="see-more-btn btn">Get My Location</button>
+              <button class="see-more-btn btn btn-secondary">
+                <i class="fa-solid fa-location-dot"></i>
+              </button>
             </div>
             <div class="air-condition-container-item-two">
               <div class="air-cond-item-two-item-one">
@@ -131,14 +133,13 @@
             </div>
           </div>
         </div>
-        <div
-          class="daily-forcast-container container pt-5 justify-content-center d-flex"
-        >
-          <h5>DAILY FORECAST</h5>
-          <div
-            class="daily-forcast container pt-4 d-flex flex-column gap-2"
-            id="daily-forcast"
-          ></div>
+        <div class="new-footer-container">
+          <div>
+            <h6>7-DAY-FORCOAST</h6>
+          </div>
+          <div class="new-new-footer-contaienr">
+            <div class="footer-container"></div>
+          </div>
         </div>
       </section>
       <h1 class="my-location"></h1>
