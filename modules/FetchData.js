@@ -1,7 +1,8 @@
-import { API_KEY, BASE_URL, DAILY_API_KEY, DAILY_BASE_URL } from "./Api.js";
-import { errorMassage } from "./varaibles.js";
-
 import {
+  API_KEY, BASE_URL, DAILY_API_KEY, DAILY_BASE_URL,
+} from './Api.js';
+import {
+  errorMassage,
   dailyForcostContainer,
   currentForcastContainer,
   cityName,
@@ -12,7 +13,7 @@ import {
   humidity,
   windSpeed,
   visibility,
-} from "./varaibles.js";
+} from './varaibles.js';
 
 function displayError(message) {
   errorMassage.innerHTML = `<p class="error">${message}</p>`;
@@ -20,9 +21,9 @@ function displayError(message) {
 
 async function FetchData(location, unit) {
   try {
-    const apiUnit = unit === "imperial" ? "imperial" : "metric";
+    const apiUnit = unit === 'imperial' ? 'imperial' : 'metric';
     const rescurrent = await fetch(
-      `${BASE_URL + location}&appid=${API_KEY}&units=${apiUnit}`
+      `${BASE_URL + location}&appid=${API_KEY}&units=${apiUnit}`,
     );
 
     if (!rescurrent.ok) {
@@ -30,15 +31,13 @@ async function FetchData(location, unit) {
     }
 
     const currentData = await rescurrent.json();
-    console.log(currentData, "currentdata");
-    currentForcastContainer.innerHTML = "";
+    currentForcastContainer.innerHTML = '';
 
     cityName.textContent = currentData.city.name;
     weatherCondation.textContent = currentData.list[0].weather[0].description;
-    temp.innerHTML =
-      currentData.list[0].main.temp.toFixed(0) +
-      "&deg;" +
-      (unit === "imperial" ? "F" : "C");
+    temp.innerHTML = `${currentData.list[0].main.temp.toFixed(0)
+    }&deg;${
+      unit === 'imperial' ? 'F' : 'C'}`;
     const iconCode = currentData.list[0].weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
@@ -49,9 +48,9 @@ async function FetchData(location, unit) {
       hour: new Date(hourlyData.dt * 1000).getHours(),
       date: new Date(hourlyData.dt * 1000).toLocaleDateString(),
       temperature:
-        hourlyData.main.temp.toFixed(0) +
-        "&deg;" +
-        (unit === "imperial" ? "F" : "C"), // Display units,
+        `${hourlyData.main.temp.toFixed(0)
+        }&deg;${
+          unit === 'imperial' ? 'F' : 'C'}`, // Display units,
       iconUrl: `https://openweathermap.org/img/wn/${hourlyData.weather[0].icon}@2x.png`,
     }));
 
@@ -76,8 +75,8 @@ async function FetchData(location, unit) {
     // Populate the slider with hourly weather data
 
     hourlyForecast.forEach((hourlyData) => {
-      const hourlySlide = document.createElement("div");
-      hourlySlide.classList.add("swiper-slide");
+      const hourlySlide = document.createElement('div');
+      hourlySlide.classList.add('swiper-slide');
 
       const htmlContent = `
             <div class="hourly-data">
@@ -90,11 +89,9 @@ async function FetchData(location, unit) {
       currentForcastContainer.appendChild(hourlySlide);
     });
 
-    realFeel.innerHTML =
-      currentData.list[0].main.feels_like.toFixed(0) + `&deg;`;
-    humidity.textContent = currentData.list[0].main.humidity.toFixed(0) + `%`;
+    realFeel.innerHTML = `${currentData.list[0].main.feels_like.toFixed(0)}&deg;`;
+    humidity.textContent = `${currentData.list[0].main.humidity.toFixed(0)}%`;
     const windSpeedMetersPerSecond = currentData.list[0].wind.speed;
-    console.log(windSpeedMetersPerSecond)
     const windSpeedKmPerHour = windSpeedMetersPerSecond * 3.6;
     windSpeed.innerHTML = `${windSpeedKmPerHour.toFixed(0)}km/h`;
     const visibilitycurent = currentData.list[0].visibility;
@@ -102,7 +99,7 @@ async function FetchData(location, unit) {
     visibility.innerHTML = `${visibilityKm.toFixed(0)}Km/h`;
 
     const resdaily = await fetch(
-      `${DAILY_BASE_URL + location}&key=${DAILY_API_KEY}&units=${unit}`
+      `${DAILY_BASE_URL + location}&key=${DAILY_API_KEY}&units=${unit}`,
     );
 
     if (!resdaily.ok) {
@@ -110,20 +107,19 @@ async function FetchData(location, unit) {
     }
 
     const dailyData = await resdaily.json();
-    console.log(dailyData);
-    dailyForcostContainer.innerHTML = "";
+    dailyForcostContainer.innerHTML = '';
 
     const dailyForecastData = dailyData.data;
 
     dailyForecastData.forEach((dailyData) => {
-      const dailyContainer = document.createElement("div");
-      dailyContainer.classList.add("daily-forecast-container");
+      const dailyContainer = document.createElement('div');
+      dailyContainer.classList.add('daily-forecast-container');
 
       const dayOfWeek = new Date(dailyData.datetime).toLocaleDateString(
-        "en-US",
+        'en-US',
         {
-          weekday: "short",
-        }
+          weekday: 'short',
+        },
       );
       const iconCode = dailyData.weather.icon;
       const { description } = dailyData.weather;

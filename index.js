@@ -1,13 +1,17 @@
-import FetchData from "./modules/FetchData.js";
-import { search,unit, getMyLocation, errorMassage, unitSelect } from "./modules/varaibles.js";
-import ForwardGeoCoding from "./modules/ForwardGeoCoding.js";
-
+import FetchData from './modules/FetchData.js';
+import {
+  search,
+  getMyLocation,
+  errorMassage,
+  unitSelect,
+} from './modules/varaibles.js';
+import ForwardGeoCoding from './modules/ForwardGeoCoding.js';
 
 window.onload = () => {
   ForwardGeoCoding();
 };
 // Add an event listener to handle unit selection changes
-unitSelect.addEventListener("change", () => {
+unitSelect.addEventListener('change', () => {
   const selectedUnit = unitSelect.value;
   const location = search.value.trim();
 
@@ -16,21 +20,21 @@ unitSelect.addEventListener("change", () => {
   }
 });
 
-getMyLocation.addEventListener('click', () =>{
-  errorMassage.innerHTML = "";
-  ForwardGeoCoding()
-})
+getMyLocation.addEventListener('click', () => {
+  errorMassage.innerHTML = '';
+  ForwardGeoCoding();
+});
 
-search.addEventListener("keydown", (e) => {
+search.addEventListener('keydown', (e) => {
   if (e.keyCode === 13) {
     e.preventDefault();
-    errorMassage.innerHTML = "";
+    errorMassage.innerHTML = '';
     const location = search.value.trim();
     const selectedUnit = unitSelect.value;
     if (location) {
       FetchData(location, selectedUnit);
     } else {
-      console.error("Please enter a location");
+      console.error('Please enter a location');
     }
   }
 });

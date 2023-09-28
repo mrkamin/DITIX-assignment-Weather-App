@@ -1,21 +1,16 @@
-import { errorMassage } from "./varaibles.js";
-import ReverseGeoCoding from "./ReverseGeoCoding.js";
-
-function displayError(message) {
-    errorMassage.innerHTML = `<p class="error">${message}</p>`;
-  }
+import ReverseGeoCoding from './ReverseGeoCoding.js';
 
 const Mylocation = () => {
   const succes = (position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    const { latitude } = position.coords;
+    const { longitude } = position.coords;
 
     ReverseGeoCoding(latitude, longitude);
   };
   const error = () => {
     if (!succes.ok) {
-        throw new Error(`HTTP errro! Status: ${rescurrent.status}`);
-      };
+      throw new Error('HTTP errro! Status:');
+    }
   };
   navigator.geolocation.getCurrentPosition(succes, error);
 };
