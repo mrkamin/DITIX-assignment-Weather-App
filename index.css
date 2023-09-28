@@ -63,8 +63,7 @@ p {
 
   .search-input {
     border: none;
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
+    border-radius: 0.5rem;
     background: var(--bg-color-transparent);
   }
 
