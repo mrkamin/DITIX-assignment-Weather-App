@@ -38,7 +38,7 @@ this is an assignment for the position Front End Development at DOTIX In this as
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Github](comming soon)
+- [Github](https://mrkamin.github.io/DOTIX-assignment-Weather-App)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
